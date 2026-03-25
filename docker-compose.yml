@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  samsung-dashboard:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - APP_PASSWORD=${APP_PASSWORD:-solidspy}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
